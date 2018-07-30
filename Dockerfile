@@ -1,7 +1,9 @@
 FROM ballerina/ballerina-platform
-WORKDIR /home/ballerina
-COPY . .
-ballerina build hello.bal
+WORKDIR /tmp/
+COPY hello.bal .
+RUN ballerina build hello.bal -o hello.balx
 
 FROM ballerina/ballerina
-COPY --from=0 /home/ballerina/hello.balx .
+WORKDIR /home/ballerina
+COPY --from=0 /tmp/hello.balx .
+CMD ballerina run hello.balx
